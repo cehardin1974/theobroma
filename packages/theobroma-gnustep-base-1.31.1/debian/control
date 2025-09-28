@@ -1,20 +1,46 @@
 Source: theobroma-gnustep-base
-Section: unknown
+Section: theobroma
 Priority: optional
-Maintainer: Chad Hardin <chad@unknown>
+Maintainer: Chad Hardin <cehardin@gmail.com>
 Rules-Requires-Root: no
 Build-Depends:
  debhelper-compat (= 13),
- autotools-dev,
+ theobroma-gnustep-make (>= 2.9.3),
+ gnutls-bin <!nocheck>,
+ gobjc <!cross>,
+ gobjc-for-host <cross>,
+ graphviz,
+ libavahi-client-dev,
+ libffi-dev,
+ libgnutls28-dev,
+ libicu-dev,
+ libobjc-14-dev <cross>,
+ libxml2-dev,
+ libxslt1-dev,
+ m4,
+ tzdata-legacy,
+ zlib1g-dev,
+Build-Depends-Indep:
+ texinfo <!nodoc>,
+ texlive-fonts-recommended <!nodoc>,
+ texlive-latex-base <!nodoc>,
+ xml-core,
 Standards-Version: 4.7.2
-Homepage: <insert the upstream URL, if relevant>
+Homepage: http://gnustep.org
 #Vcs-Browser: https://salsa.debian.org/debian/theobroma-gnustep-base
 #Vcs-Git: https://salsa.debian.org/debian/theobroma-gnustep-base.git
 
 Package: theobroma-gnustep-base
 Architecture: any
 Depends:
- ${shlibs:Depends},
+ dpkg-dev,
+ ca-certificates,
+ theobroma-gnustep-make (>= 2.9.3),
+ tzdata-legacy,
+ gnutls-bin,
+ graphviz,
+ gobjc++ | gobjc++-for-host,
  ${misc:Depends},
+ ${shlibs:Depends},
 Description: <insert up to 60 chars description>
  <Insert long description, indented with spaces.>

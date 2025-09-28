@@ -1,0 +1,11 @@
+Package: theobroma-gnustep-make
+Version: 2.9.3-1
+Architecture: amd64
+Maintainer: Chad Hardin <cehardin@gmail.com>
+Installed-Size: 1047
+Depends: autotools-dev, debhelper, gobjc++ | gobjc++-for-host
+Section: theobroma
+Priority: optional
+Homepage: http://gnustep.org
+Description: <insert up to 60 chars description>
+ <Insert long description, indented with spaces.>
