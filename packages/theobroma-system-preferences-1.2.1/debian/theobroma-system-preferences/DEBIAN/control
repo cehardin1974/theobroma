@@ -1,0 +1,11 @@
+Package: theobroma-system-preferences
+Version: 1.2.1-1
+Architecture: amd64
+Maintainer: Chad Hardin <chad@unknown>
+Installed-Size: 1144
+Depends: theobroma-gnustep-gui (>= 0.32.0), libc6 (>= 2.34), libgcc-s1 (>= 3.0), libobjc4 (>= 4.2.1), theobroma-gnustep-base (>= 1.31.1)
+Section: unknown
+Priority: optional
+Homepage: <insert the upstream URL, if relevant>
+Description: <insert up to 60 chars description>
+ <Insert long description, indented with spaces.>
