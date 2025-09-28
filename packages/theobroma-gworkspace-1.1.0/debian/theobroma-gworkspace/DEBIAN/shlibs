@@ -1,0 +1,4 @@
+libFSNode 1 theobroma-gworkspace (>= 1.1.0)
+libInspector 1 theobroma-gworkspace (>= 1.1.0)
+libOperation 1 theobroma-gworkspace (>= 1.1.0)
+libDBKit 0 theobroma-gworkspace (>= 1.1.0)
