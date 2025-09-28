@@ -1,0 +1,11 @@
+Package: theobroma-gnustep-base
+Version: 1.31.1-1
+Architecture: amd64
+Maintainer: Chad Hardin <cehardin@gmail.com>
+Installed-Size: 11034
+Depends: dpkg-dev, ca-certificates, theobroma-gnustep-make (>= 2.9.3), tzdata-legacy, gnutls-bin, graphviz, gobjc++ | gobjc++-for-host, libavahi-client3 (>= 0.6.16), libavahi-common3 (>= 0.6.16), libc6 (>= 2.38), libffi8 (>= 3.4), libgcc-s1 (>= 3.0), libgnutls30t64 (>= 3.8.6), libicu76 (>= 76.1-1~), libobjc4 (>= 4.6), libxml2 (>= 2.9.0), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
+Section: theobroma
+Priority: optional
+Homepage: http://gnustep.org
+Description: <insert up to 60 chars description>
+ <Insert long description, indented with spaces.>

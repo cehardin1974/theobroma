@@ -219,11 +219,16 @@ bf2698bac36b74845e06d5a87e8f0e67  ./gnustep-base.spec.old
 7fb3bf4b72827ad5fdae7ff8ee81ac23  ./base.xcodeproj/project.pbxproj
 11aeae58050eb961d955b516b2a6562a  ./ChangeLog.2
 e8a673d5d4d69a5fd11c880fd4c3c481  ./.pc/.quilt_series
+d6b2885c1e6135ce765d4b4729219df9  ./.pc/fix-domain/Source/gnustep-base.pc
+3954804944e3c0b24773b9738774e305  ./.pc/fix-domain-2/configure
 26ab0db90d72e28ad0ba1e22ee510510  ./.pc/.version
-08778dfd9ac4f603231896aba7aad523  ./.pc/applied-patches
+9179780640f374f7868f14929fd4173f  ./.pc/applied-patches
 266f9759f56277b2751b24d1eb17c50f  ./.pc/.quilt_patches
 d41d8cd98f00b204e9800998ecf8427e  ./.pc/b1/Source/dynamic-load.h
 d41d8cd98f00b204e9800998ecf8427e  ./.pc/b1/Source/gnustep-base.pc
+872d11289035d01e6d5d513d0be71b04  ./.pc/b2/GNUmakefile
+d41d8cd98f00b204e9800998ecf8427e  ./.pc/b2/Tests/base/NSURL/Capture.dat
+a524ddc2eb244e24e6bb6051b15bbe73  ./.pc/b2/Source/gnustep-base.pc
 a98a1622259005bbd5f1ccb4f5faa2c4  ./ChangeLog
 cecd05ef4a0ff093ddef7a73e6faba95  ./README.md
 a0fbd1e24eae536b1622c878cf3d1a08  ./.gitignore
@@ -443,7 +448,7 @@ f057415f66c94f4b44069bc56d3d12ba  ./Resources/Esperanto.lproj/Localizable.string
 0d9880c2280b5e12925520ae2b0ed427  ./configure.ac
 1702a2906af215998cc1fa7ad872760b  ./MISSING
 538b76367c1a4e0061fcf7988277b13a  ./.clang-format
-872d11289035d01e6d5d513d0be71b04  ./GNUmakefile
+dc09b84b2850e376b13de8994adf5542  ./GNUmakefile
 712ca9340efb850f4d17f6dbe5d97eea  ./Tests/GNUmakefile
 cc0f8e6e89e88999ad2ec1cabd4398b2  ./Tests/base/NSMutableData/general.m
 d41d8cd98f00b204e9800998ecf8427e  ./Tests/base/NSMutableData/TestInfo
@@ -876,6 +881,7 @@ ecb6e13fc83a919b8d6a69764773238c  ./Tests/base/NSURL/Helpers/GNUmakefile
 af1b53c11dc13927949e4227f077ef81  ./Tests/base/NSURL/test02.m
 70d78587eb3d022018f031b18d3c4d8f  ./Tests/base/NSURL/test00.m
 9065b14d89fdfcaeab5d991098889f9c  ./Tests/base/NSURL/GNUmakefile.preamble
+85aef3a1fe146f6c224bd3fdce427007  ./Tests/base/NSURL/Capture.dat
 43f48f0b68d481a30a579c73988fe62f  ./Tests/base/NSURL/test01.m
 c0be914c551547a187771ae92f834667  ./Tests/base/NSURL/components.m
 fe3ed8e5d2886131fbd90975b57ff126  ./Tests/base/NSURL/testCert.pem
@@ -1109,6 +1115,7 @@ dff72a0772887925dda25d40103c0d59  ./Examples/Makefile.postamble
 e0bf2515e4411d425a5e4115938d5f33  ./Examples/server.h
 d3cb4b10ea3a06295eddc5f36c52322f  ./Examples/custom-zone.m
 ee6393229e1f79bb23fb0650532cf0e7  ./INSTALL
+eeda5a7d12a21cd35ad0f66181d22170  ./configure
 2bcad6b0cfde817cff60094241ad6e27  ./gnustep-base.spec.in
 28eb63118a8787ad73e560b956888665  ./Version
 3a54e858d88191fbf340f2e8ec7b641f  ./config.mak.in
@@ -1395,7 +1402,7 @@ bfb9ebe0e600c34c25d105f136252432  ./Source/GSPrivateHash.m
 debc05fedea865d576cba748994d6d21  ./Source/NSMeasurementFormatter.m
 df58e379059a903132f3153bd74780d7  ./Source/NSKVOInternal.h
 660b974f2989779904781875617bc6d1  ./Source/win32-load.h
-a524ddc2eb244e24e6bb6051b15bbe73  ./Source/gnustep-base.pc
+6f6baa060219f0e72288bd888cca42b7  ./Source/gnustep-base.pc
 5a47dbf24442f1867a87653c0d0c5497  ./Source/GSDictionary.m
 7b10d62928ccfc1d07d0f99f3295ab70  ./Source/NSDecimalNumber.m
 0077ffadb71d0637eefa022964137a19  ./Source/GSRunLoopWatcher.h

@@ -1,0 +1,3 @@
+shlibs:Depends=libavahi-client3 (>= 0.6.16), libavahi-common3 (>= 0.6.16), libc6 (>= 2.38), libffi8 (>= 3.4), libgcc-s1 (>= 3.0), libgnutls30t64 (>= 3.8.6), libicu76 (>= 76.1-1~), libobjc4 (>= 4.6), libxml2 (>= 2.9.0), libxslt1.1 (>= 1.1.25), theobroma-gnustep-base (>= 1.31.1), zlib1g (>= 1:1.1.4)
+misc:Depends=
+misc:Pre-Depends=

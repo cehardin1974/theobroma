@@ -1,0 +1,1498 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ theobroma-gnustep-make (2.9.3-1) UNRELEASED; urgency=medium
+ .
+   * Initial release. (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+Author: Chad Hardin <chad@unknown>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout https://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: (upstream|backport|vendor|other), (<patch-url>|commit:<commit-id>)
+Bug: <upstream-bugtracker-url>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: (no|not-needed|<patch-forwarded-url>)
+Applied-Upstream: <version>, (<commit-url>|commit:<commid-id>)
+Reviewed-By: <name and email of someone who approved/reviewed the patch>
+Last-Update: 2025-09-28
+
+--- /dev/null
++++ theobroma-gnustep-make-2.9.3/GNUstep-reset.sh
+@@ -0,0 +1,197 @@
++#   This file must be sourced inside (ba)sh using: .
++#
++#   GNUstep-reset.sh
++#
++#   Shell script resetting the GNUstep environment variables
++#
++#   Copyright (C) 2002 Free Software Foundation, Inc.
++#
++#   Author:  Nicola Pero <n.pero@mi.flashnet.it>
++#
++#   This file is part of the GNUstep Makefile Package.
++#
++#   This library is free software; you can redistribute it and/or
++#   modify it under the terms of the GNU General Public License
++#   as published by the Free Software Foundation; either version 3
++#   of the License, or (at your option) any later version.
++#   
++#   You should have received a copy of the GNU General Public
++#   License along with this library; see the file COPYING.
++#   If not, write to the Free Software Foundation,
++#   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
++#
++
++# This file is used to reset your environment.  This is needed if you
++# want to change LIBRARY_COMBO.  You first reset your environment, then
++# set a new LIBRARY_COMBO variable, then source GNUstep.sh again.
++
++# This file resets variables in reverse order as they are set in the
++# GNUstep.sh file.
++
++# This file only makes sense if you are using the standard GNUstep
++# filesystem structure.  If you're not, then your System Tools
++# directory could be /usr/bin, but you don't really want to remove
++# that from your PATH. :-)
++
++# This function resets a path.
++# It takes two arguments: the name of the path variable to reset,
++# and a path fragment which is used to make our guess at what should
++# be removed more accurate.  All paths beginning with GNUSTEP_SYSTEM_ROOT, 
++# GNUSTEP_LOCAL_ROOT, GNUSTEP_NETWORK_ROOT and GNUSTEP_USER_ROOT 
++# followed by the specified path fragment are removed from the path
++# variable.  All other paths are kept unchanged.
++function reset_path 
++{
++  # Declare local variables
++  local original_path tmp_IFS temp_path dir gnustep_dir found
++
++  # NB: We need to use eval because we want to access a variable
++  # whose name is another variable!
++  original_path=$(eval echo \$$1)
++  tmp_IFS="$IFS"
++  IFS=:
++  temp_path=
++  # Loop on the paths
++  for dir in $original_path; do
++    # For each of them, keep it only if it's not beginning with
++    # a path in GNUSTEP_PATHLIST as prefix
++    found=no;
++    for gnustep_dir in $GNUSTEP_PATHLIST; do
++      if [ -n "$gnustep_dir$2" ]; then
++        case "$dir" in
++          $gnustep_dir$2*)  found=yes; break;;
++          *);;
++        esac;
++      fi;
++    done;
++    if [ "$found" = "no" ]; then
++      if [ -z "$temp_path" ]; then
++        temp_path="$dir"
++      else
++        temp_path="$temp_path:$dir"
++      fi;
++    fi
++  done
++  IFS="$tmp_IFS"
++
++  # Not set the path variable.
++  eval "$1=\$temp_path"
++  # Export it only if non empty, otherwise remove it completely from
++  # the shell environment.
++  temp_path=`eval echo \$"$1"`
++  if [ -z "$temp_path" ]; then
++    eval "unset $1"
++  else
++    eval "export $1"
++  fi
++}
++
++reset_path INFOPATH /usr/Local/Library/Documentation/info
++reset_path GUILE_LOAD_PATH /usr/Local/Library/Libraries/Guile
++reset_path CLASSPATH /usr/Local/Library/Libraries/Java
++reset_path LD_LIBRARY_PATH /usr/Local/Library/Libraries
++reset_path DYLD_LIBRARY_PATH /usr/Local/Library/Libraries
++reset_path DYLD_FRAMEWORK_PATH /usr/Local/Library/Frameworks
++reset_path PATH /usr/Local/Tools
++
++# Make sure we destroy the reset_path function after using it - we don't
++# want to pollute the environment with it.
++unset -f reset_path
++
++unset GNUSTEP_SYSTEM_USERS_DIR
++unset GNUSTEP_NETWORK_USERS_DIR
++unset GNUSTEP_LOCAL_USERS_DIR
++
++unset GNUSTEP_SYSTEM_APPS 
++unset GNUSTEP_SYSTEM_ADMIN_APPS 
++unset GNUSTEP_SYSTEM_WEB_APPS 
++unset GNUSTEP_SYSTEM_TOOLS 
++unset GNUSTEP_SYSTEM_ADMIN_TOOLS 
++unset GNUSTEP_SYSTEM_LIBRARY
++unset GNUSTEP_SYSTEM_HEADERS 
++unset GNUSTEP_SYSTEM_LIBRARIES 
++unset GNUSTEP_SYSTEM_RESOURCES 
++unset GNUSTEP_SYSTEM_JAVA 
++unset GNUSTEP_SYSTEM_DOC 
++unset GNUSTEP_SYSTEM_DOC_MAN
++unset GNUSTEP_SYSTEM_DOC_INFO
++
++unset GNUSTEP_NETWORK_APPS 
++unset GNUSTEP_NETWORK_ADMIN_APPS 
++unset GNUSTEP_NETWORK_WEB_APPS 
++unset GNUSTEP_NETWORK_TOOLS 
++unset GNUSTEP_NETWORK_ADMIN_TOOLS 
++unset GNUSTEP_NETWORK_LIBRARY
++unset GNUSTEP_NETWORK_HEADERS 
++unset GNUSTEP_NETWORK_LIBRARIES 
++unset GNUSTEP_NETWORK_RESOURCES 
++unset GNUSTEP_NETWORK_JAVA 
++unset GNUSTEP_NETWORK_DOC 
++unset GNUSTEP_NETWORK_DOC_MAN
++unset GNUSTEP_NETWORK_DOC_INFO
++
++unset GNUSTEP_LOCAL_APPS 
++unset GNUSTEP_LOCAL_ADMIN_APPS 
++unset GNUSTEP_LOCAL_WEB_APPS 
++unset GNUSTEP_LOCAL_TOOLS 
++unset GNUSTEP_LOCAL_ADMIN_TOOLS 
++unset GNUSTEP_LOCAL_LIBRARY
++unset GNUSTEP_LOCAL_HEADERS 
++unset GNUSTEP_LOCAL_LIBRARIES 
++unset GNUSTEP_LOCAL_RESOURCES 
++unset GNUSTEP_LOCAL_JAVA 
++unset GNUSTEP_LOCAL_DOC 
++unset GNUSTEP_LOCAL_DOC_MAN
++unset GNUSTEP_LOCAL_DOC_INFO
++
++unset GNUSTEP_USER_APPS 
++unset GNUSTEP_USER_ADMIN_APPS
++unset GNUSTEP_USER_WEB_APPS
++unset GNUSTEP_USER_TOOLS 
++unset GNUSTEP_USER_ADMIN_TOOLS
++unset GNUSTEP_USER_LIBRARY
++unset GNUSTEP_USER_HEADERS 
++unset GNUSTEP_USER_LIBRARIES 
++unset GNUSTEP_USER_RESOURCES 
++unset GNUSTEP_USER_JAVA 
++unset GNUSTEP_USER_DOC 
++unset GNUSTEP_USER_DOC_MAN
++unset GNUSTEP_USER_DOC_INFO
++
++# These should not defined, but might be if something goes wrong
++# somewhere.
++unset GNUSTEP_MAKE_STRICT_V2_MODE
++unset GNUSTEP_USER_DIR_APPS 
++unset GNUSTEP_USER_DIR_ADMIN_APPS
++unset GNUSTEP_USER_DIR_WEB_APPS
++unset GNUSTEP_USER_DIR_TOOLS 
++unset GNUSTEP_USER_DIR_ADMIN_TOOLS 
++unset GNUSTEP_USER_DIR_LIBRARY
++unset GNUSTEP_USER_DIR_HEADERS 
++unset GNUSTEP_USER_DIR_LIBRARIES 
++unset GNUSTEP_USER_DIR_RESOURCES 
++unset GNUSTEP_USER_DIR_JAVA 
++unset GNUSTEP_USER_DIR_DOC 
++unset GNUSTEP_USER_DIR_DOC_MAN
++unset GNUSTEP_USER_DIR_DOC_INFO
++
++unset GNUSTEP_PATHLIST
++unset GNUSTEP_USER_ROOT
++unset GNUSTEP_HOST_OS
++unset GNUSTEP_HOST_VENDOR
++unset GNUSTEP_HOST_CPU
++unset GNUSTEP_HOST
++unset GNUSTEP_NETWORK_ROOT
++unset GNUSTEP_LOCAL_ROOT
++unset GNUSTEP_MAKEFILES
++unset GNUSTEP_FLATTENED
++unset GNUSTEP_IS_FLATTENED
++unset GNUSTEP_SYSTEM_ROOT
++unset GNUSTEP_ROOT
++unset LIBRARY_COMBO
++
++unset GNUSTEP_CONFIG_FILE
++unset GNUSTEP_USER_CONFIG_FILE
++unset GNUSTEP_USER_DIR
++unset GNUSTEP_USER_DEFAULTS_DIR
++
+--- /dev/null
++++ theobroma-gnustep-make-2.9.3/TestFramework/gnustep-tests
+@@ -0,0 +1,1001 @@
++#!/bin/bash
++#
++#  Runs tests for the GNUstep Testsuite
++#
++#  Copyright (C) 2005-2011 Free Software Foundation, Inc.
++#
++#  Written by:  Alexander Malmberg <alexander@malmberg.org>
++#  Updates by:  Richard Frith-Macdonald <rfm@gnu.org>
++#
++#  This package is free software; you can redistribute it and/or
++#  modify it under the terms of the GNU General Public
++#  License as published by the Free Software Foundation; either
++#  version 3 of the License, or (at your option) any later version.
++#
++#  This library is distributed in the hope that it will be useful,
++#  but WITHOUT ANY WARRANTY; without even the implied warranty of
++#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++#  General Public License for more details.
++#
++#
++# Usage: gnustep-tests [directory | test.m]
++#
++# Runs the tests in the specified directory (or those in the individual file)
++# or all the tests in subdirectories of the current directory if no arguments
++# are given.
++# A summary is written to tests.sum, a log to tests.log, and a brief
++# summary to stdout.
++# The log and summary from the previous testrun are renamed to
++# oldtests.log and oldtests.sum, available for comparison.
++# The exit value of the script is 0 if there are no failures, 1 otherwise.
++
++if test "NO" = "YES"; then
++  echo "gnustep-make was unable to find bash at configure time."
++  echo "The test framework cannot run without bash installed."
++  echo "Please install bash and reconfigure/reinstall gnustep-make."
++  exit 0
++fi
++
++if test -z "$GNUSTEP_MAKEFILES"; then
++  GNUSTEP_MAKEFILES=`gnustep-config --variable=GNUSTEP_MAKEFILES 2>/dev/null`
++  if test -z "$GNUSTEP_MAKEFILES"; then
++    echo "You need to have GNUstep-make installed and set up."
++    echo "Did you remember to source GNUstep.sh?"
++  else
++    echo "You forgot to set your GNUSTEP_MAKEFILES environment variable."
++    echo "Setting it to $GNUSTEP_MAKEFILES during this test run."
++    export GNUSTEP_MAKEFILES
++    . $GNUSTEP_MAKEFILES/GNUstep.sh
++  fi
++fi
++
++GSTESTTOP="$GNUSTEP_MAKEFILES/TestFramework"
++export GSTESTTOP
++GSTESTDIR=`pwd`
++export GSTESTDIR
++
++if test x"$GSTESTMODE" = x
++then
++  GSTESTMODE=normal
++fi
++if test x"$GSTESTTIMEOUT" = x
++then
++  GSTESTTIMEOUT="300s"
++fi
++if test x"$GSMAKEOPTIONS" = x
++then
++  GSMAKEOPTIONS="debug=yes"
++fi
++GSVERBOSECFLAG=
++
++# Argument checking
++while test $# != 0
++do
++  gs_option=
++  case $1 in
++    --asan)
++      GNUSTEP_WITH_ASAN=1
++      export GNUSTEP_WITH_ASAN
++      ;;
++    --clean)
++      GSTESTMODE=clean
++      ;;
++    --timeout)
++      GSTESTTIMEOUT=$2
++      shift
++      ;;
++    --debug)
++      GSTESTDBG="$GSTESTDIR/gdb.cmds"
++      ;;
++    --make-debug)
++      GSMAKEOPTIONS+=" --debug"
++      ;;
++    --make-no-silent)
++      GSMAKEOPTIONS+=" --no-silent"
++      ;;
++    --developer)
++      GSTESTDEV=yes
++      ;;
++    --documentation)
++      echo
++      echo "$0: Script to run the GNUstep testsuite"
++      echo "Usage: gnustep-tests [directory | test.m]"
++      echo "Runs the specified test, or any in subdirectories of the"
++      echo "current directory if no arguments are given."
++      echo "Use 'gnustep-tests --help' for basic help."
++      echo
++      cat $GSTESTTOP/README
++      exit 0
++      ;;
++    --sequential)
++      GSSEQUENTIAL=yes
++      ;;
++    --notimestamps)
++      GSTEST_TS=0
++      ;;
++    --verbose)
++      GSVERBOSE=yes
++      GSMAKEOPTIONS+=" messages=yes"
++      GSVERBOSECFLAG="-v"
++      ;;
++    --failfast)
++      GSTESTMODE=failfast
++      ;;
++    --help | -h)
++      echo
++      echo "$0: Script to run the GNUstep testsuite"
++      echo "Usage: gnustep-tests [directory | test.m]]"
++      echo "Runs the specified tests, or any in subdirectories of the"
++      echo "current directory if no arguments are given."
++      echo "Use 'gnustep-tests --documentation' for full details."
++      echo "Use 'gnustep-tests --asan' to build using GNUSTEP_WITH_ASAN=1 set."
++      echo "Use 'gnustep-tests --clean' to remove old logs and leftover files."
++      echo "Use 'gnustep-tests --timeout <VAL>' to change the default timeout ($GSTESTTIMEOUT)."
++      echo "Use 'gnustep-tests --failfast' to stop after the first failure."
++      echo "Use 'gnustep-tests --debug' to run gdb/lldb for any failed tests."
++      echo "Use 'gnustep-tests --make-debug' to enable make debug output."
++      echo "Use 'gnustep-tests --make-no-silent' to disable silent make output."
++      echo "Use 'gnustep-tests --developer' to treat hopes as real tests."
++      echo "Use 'gnustep-tests --verbose' for full/detailed log output."
++      echo "Use 'gnustep-tests --sequential' to disable parallel building."
++      echo "Use 'gnustep-tests --notimestamps' to disable testcase timestamps."
++      echo
++      echo "Interpreting the output"
++      echo "-----------------------"
++      echo "The summary output lists all test failures ... there should not"
++      echo "be any.  If a test fails then either there is a problem in the"
++      echo "software being tested, or a problem in the test itself. Either"
++      echo "way, you should try to fix the problem and provide a patch, or"
++      echo "at least report it at: https://savannah.gnu.org/bugs/?group=gnustep"
++      echo
++      exit 0
++      ;;
++    *)
++      break
++      ;;
++  esac
++  shift
++done
++
++export GSTESTMODE
++GSTESTLOG=$GSTESTDIR/tests.log
++export GSTESTLOG
++GSTESTSUM=$GSTESTDIR/tests.sum
++export GSTESTSUM
++
++if test x"$GNUSTEP_WITH_ASAN" = x1
++then
++  # When testing with address sanitizer (and leak sanitizer) we normally
++  # want the option to have memory leaks be signalled by the test ending
++  # with a well known exit code.
++  if test x"$LSAN_OPTIONS" = x
++  then
++    LSAN_OPTIONS=exitcode=23
++    export LSAN_OPTIONS
++  fi
++else
++  GNUSTEP_WITH_ASAN=0
++fi
++export GNUSTEP_WITH_ASAN
++
++# We assume that the C compiler supports ObjC
++if test x"$CC" = x
++then
++  CC=`gnustep-config --variable=CC`
++  export CC
++fi
++
++# The C++/ObjC++ tests are currently enabled only if you do 'make
++# check GNUSTEP_TEST_OBJCXX=yes'.
++if test x"$GNUSTEP_TEST_OBJCXX" = x"yes"
++then
++  # Determine the ObjC++ compiler to use.  Either it was supplied
++  # in the environment or command-line by setting the variable
++  # OBJCXX, or we'll use the default configured in gnustep-make.
++  if test x"$OBJCXX" = x
++  then
++    OBJCXX=`gnustep-config --variable=OBJCXX`
++  fi
++
++  if test x"$OBJCXX" = x
++  then
++    echo "Warning: You asked to run the Objective-C++ testcases, but no Objective-C++ compiler was found."
++    echo "         Objective-C++ testcases will not be ignored."
++    echo "         Try setting OBJCXX to your Objective-C++ compiler to fix this."
++  else
++    # Set the CXX variable which is the one actually used by gnustep-make
++    # to compile and link ObjC++.
++    CXX="$OBJCXX"
++    export CXX
++  fi
++else
++  OBJCXX=
++fi
++
++if test x"$GSTEST_TS" = x"0"
++then
++  GSTESTFLAGS="-DTEST_TS=0"
++else
++  GSTESTFLAGS="-DTEST_TS=1"
++fi
++if test "$GSTESTMODE" = "failfast"
++then
++  if test x"$GSTESTDEV" = x"yes"
++  then
++    GSTESTFLAGS="$GSTESTFLAGS -DTESTDEV=1 -DFAILFAST=1"
++  else
++    GSTESTFLAGS="$GSTESTFLAGS -DFAILFAST=1"
++  fi
++elif test x"$GSTESTDEV" = x"yes"
++then
++  GSTESTFLAGS="$GSTESTFLAGS -DTESTDEV=1"
++fi
++
++if test x"$GSTESTFLAGS" != x
++then
++  #
++  # We need to add flags to all the code we build.
++  # We do this by using the ADDITIONAL_?FLAGS
++  # environment variables supported by gnustep-make.
++  #
++  ADDITIONAL_OBJCFLAGS="$GSTESTFLAGS $ADDITIONAL_OBJCFLAGS"
++  export ADDITIONAL_OBJCFLAGS
++  ADDITIONAL_OBJCCFLAGS="$GSTESTFLAGS $ADDITIONAL_OBJCCFLAGS"
++  export ADDITIONAL_OBJCCFLAGS
++fi
++
++#
++# We insert our header directory as the first additional header directory
++# so that the test header files are found before any others.
++#
++ADDITIONAL_INCLUDE_DIRS="-I$GSTESTTOP $ADDITIONAL_INCLUDE_DIRS"
++export ADDITIONAL_INCLUDE_DIRS
++
++GSTESTFLAGS=`gnustep-config --debug-flags`
++GSTESTLIBS=`gnustep-config --gui-libs`
++GSTESTOPTS="GNUSTEP_OBJ_DIR=./obj"
++
++if test x"$BASH_VERSION" = x
++then
++# In some shells the built in test command actually only implements a subset
++# of the normally expected functionality (or is partially broken), so we
++# define a function to call a real program to do the job.
++test()
++{
++  /usr/bin/test $@
++}
++fi
++
++if test ! "$MAKE_CMD"
++then
++  MAKE_CMD=`gnustep-config --variable=GNUMAKE`
++  $MAKE_CMD --version > /dev/null 2>&1
++  if test $? != 0
++  then
++    MAKE_CMD=gmake
++    $MAKE_CMD --version > /dev/null 2>&1
++    if test $? != 0
++    then
++      MAKE_CMD=make
++    fi
++  fi
++fi
++
++if test $# = 0
++then
++  echo "Checking for presence of test subdirectories ..."
++  NONAME=yes
++else
++  NONAME=no
++fi
++
++TEMP=`echo *`
++TESTS=
++TESTDIRS=
++for file in $TEMP
++do
++  if test -d $file -a $file != CVS -a $file != obj
++  then
++    TESTDIRS="$TESTDIRS $file"
++  fi
++done
++
++if test x$1 != x
++then
++  if test -d $1
++  then
++    # Only find in the directories specified.
++    TESTDIRS=$*
++  elif test -r $1
++  then
++    TESTDIRS=`dirname $1`
++    TESTS=`basename $1`
++    BARE=`basename $TESTS .m`
++    if test x"$BARE" = x"$TESTS"
++    then
++      BARE=`basename $TESTS .mm`
++      if test x"$BARE" = x"$TESTS"
++      then
++        BARE=`basename $TESTS .c`
++        if test x"$BARE" = x"$TESTS"
++        then
++          BARE=`basename $TESTS .cc`
++          if test x"$BARE" = x"TESTS"
++          then
++            echo "The file '$1' does not end in .m, .mm, .c or .cc ... cannot test."
++            exit 1
++          fi
++        fi
++      fi
++    fi
++  else
++    echo "'$1' is not a directory or a readable source file ... cannot test."
++    exit 1
++  fi
++fi
++
++# Function for platforms where grep can't search for multiple patterns.
++extract()
++{
++  f=$1
++  shift
++  while test $# != 0
++  do
++    grep -a "$1" "$f"
++    shift
++  done
++}
++
++# Get the name of a test from its file name
++getname()
++{
++  TESTNAME=`echo $1 | sed -e"s/^\(test^.]*\)$/\1.obj./;s/\.[^.]*//g"`
++}
++
++# Function for platforms where grep can't search for multiple patterns.
++present()
++{
++  f=$1
++  shift
++  while test $# != 0
++  do
++    grep -a "$1" "$f" >/dev/null
++    if test $? = "0"
++    then
++      return 0
++    fi
++    shift
++  done
++  return 1
++}
++
++# Low level function to build the Objective-C program $TESTFILE
++# in the current directory.  The TEMPLATE variable must already
++# be set to the name of the make file template if gnustep-make
++# is to do the building.
++# 
++build_test ()
++{
++  # The argument to this function is the name of a test file.
++  # Remove the extension, if there is one. If there is no extension, add
++  # .obj .
++  local TESTFILE=$1
++  local TESTNAME=`echo $TESTFILE | sed -e"s/^\(test^.]*\)$/\1.obj./;s/\.[^.]*//g"`
++  local BUILD_STATUS
++  local BUILD_CMD
++  local tmp
++
++  # Build the test.
++  echo "Building $TESTNAME"
++
++  if test x"$TEMPLATE" = x
++  then
++    # The very simple case, we just need to compile a single file
++    # putting the executable in the obj subdirectory.
++    # We test for a .mm extension to see which compiler to use.
++    rm -rf ./obj
++    mkdir ./obj
++    tmp=`basename $TESTFILE .m`
++    if test x"$tmp" = x"$TESTFILE"
++    then
++      tmp=`basename $TESTFILE .mm`
++      if test x"$tmp" = x"$TESTFILE"
++      then
++        tmp=`basename $TESTFILE .c`
++        if test x"$tmp" = x"$TESTFILE"
++        then
++          BUILD_CMD="$CXX -o $GSVERBOSECFLAG ./obj/$TESTNAME $TESTFILE $ADDITIONAL_CXXFLAGS $ADDITIONAL_LDFLAGS"
++        else
++          BUILD_CMD="$CC -o $GSVERBOSECFLAG ./obj/$TESTNAME $TESTFILE $ADDITIONAL_CFLAGS $ADDITIONAL_LDFLAGS"
++        fi
++      else
++        BUILD_CMD="$OBJCXX -o $GSVERBOSECFLAG ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
++      fi
++    else
++      BUILD_CMD="$CC -o $GSVERBOSECFLAG ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
++    fi
++  else
++    echo $GSMAKEOPTIONS
++    BUILD_CMD="$MAKE_CMD $GSMAKEOPTIONS $TESTNAME"
++  fi
++
++  # Redirect errors to stdout so it shows up in the log,
++  # but not in the summary.
++  echo "Building $dir/$TESTFILE"
++  echo "$BUILD_CMD"
++  if test -r ./make-check.env
++  then
++    ( . ./make-check.env; . ./TestInfo > /dev/null 2>&1; $BUILD_CMD) 2>&1
++  else
++    ( . ./TestInfo > /dev/null 2>&1; $BUILD_CMD) 2>&1
++  fi
++
++  if test $? != 0
++  then
++    rm -f ./obj/$TESTNAME
++    echo "Failed build:     $1" | tee -a $GSTESTSUM >> $GSTESTLOG
++    if test "$GSTESTMODE" = "failfast"
++    then
++      return 1
++    fi
++  fi
++  return 0
++}
++
++run_test ()
++{
++  # Remove the extension, if there is one. If there is no extension, add
++  # .obj .
++  local TESTFILE=$1
++  local TESTNAME=$2
++
++  # Run the test.
++
++  local RUN_CMD="./obj/$TESTNAME"
++
++  if test -x $RUN_CMD
++  then
++
++    # Tell glibc to check for malloc errors, and to crash if it detects any.
++    MALLOC_CHECK_=2
++    export MALLOC_CHECK_
++
++    if test x"$GNUSTEP_WITH_ASAN" = x1
++    then
++      # With ASAN/LSAN keeping objects in existence as zombies may give us
++      # false negatives when looking for leaks.
++      # When running without ASAN leak checking we want basic memory checking.
++      NSZombieEnabled=NO
++      CRASH_ON_ZOMBIE=NO
++    else
++      # Tell GNUstep-base to check for messages sent to deallocated objects
++      # and crash if it happens.
++      NSZombieEnabled=YES
++      CRASH_ON_ZOMBIE=YES
++    fi
++    export NSZombieEnabled CRASH_ON_ZOMBIE
++
++    echo Running $dir/$TESTFILE...
++    # Run it. If it terminates abnormally, mark it as a crash (unless we have
++    # a special file to mark it as being expected to abort).
++
++    # Env.sh is deprecated ... we should only use TestInfo to setup for a test
++    if test -r ./Env.sh
++    then
++      ( . ./Env.sh; time timeout $GSTESTTIMEOUT $RUN_CMD )
++    else
++      if test -r ./make-check.env
++      then
++        ( . ./make-check.env; . ./TestInfo > /dev/null 2>&1; time timeout $GSTESTTIMEOUT $RUN_CMD )
++      else
++        ( . ./TestInfo > /dev/null 2>&1; time timeout $GSTESTTIMEOUT $RUN_CMD )
++      fi
++    fi
++
++    result=$?
++    if test $result -eq 0; then
++      echo "Completed file:  $TESTFILE" >&2
++    elif test $result -eq 23; then
++      # https://github.com/google/sanitizers/wiki/AddressSanitizerLeakSanitizer
++      echo "Failed file:  $TESTFILE leaked memory!" >&2
++      if test "$GSTESTMODE" = "failfast"; then
++	return 1
++      fi
++    elif test $result -eq 124; then
++      now=`date`
++      echo "Failed file:  $TESTFILE timed out at $now!" >&2
++      if test "$GSTESTMODE" = "failfast"; then
++	return 1
++      fi
++    else
++      if test -r $TESTFILE.abort; then
++	echo "Completed file:  $TESTFILE" >&2
++      else
++	echo "Failed file:  $TESTFILE aborted without running all tests!" >&2
++	if test "$GSTESTMODE" = "failfast"; then
++	  return 1
++	fi
++      fi
++    fi
++  else
++    echo "Skipped (not built) file:  $TESTFILE" >&2
++  fi
++  return 0
++}
++
++
++run_test_log ()
++{
++  local TESTFILE=$1
++  local TESTNAME=$2
++  local TESTLOG=$3
++  local TESTVRB=$4
++
++  # Create temporary files
++  touch $TESTVRB
++  echo Testing $TESTFILE... > $TESTLOG
++
++  if test x"$GSVERBOSE" = xyes
++  then
++    run_test $TESTFILE $TESTNAME 2>&1 | tee -a $TESTLOG >> $TESTVRB
++  else
++    run_test $TESTFILE $TESTNAME >> $TESTLOG 2>&1
++  fi
++  result=$?
++  if test "$result" != "0"
++  then
++    if test "$GSTESTMODE" = "failfast"
++    then
++      RUNEXIT=1
++    fi
++  fi
++}
++
++proc_test_log ()
++{
++  local TESTFILE=$1
++  local TESTNAME=$2
++  local TESTLOG=$3
++  local TESTVRB=$4
++
++  # Extract the summary information and add it to the summary file.
++  extract $TESTLOG "^Passed test:" "^Failed test:" "^Failed build:" "^Completed file:" "^Failed file:" "^Dashed hope:" "^Failed set:" "^Skipped set:" > $GSTESTSUM.tmp
++  cat $GSTESTSUM.tmp >> $GSTESTSUM
++
++  cat $TESTLOG >> $GSTESTLOG
++  rm -f $TESTLOG
++  cat $TESTVRB
++  rm -f $TESTVRB
++
++  # If there were failures or skipped tests then report them...
++  if present $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:" "^Skipped set:"
++  then
++    echo
++    echo $dir/$TESTFILE:
++    extract $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:" "^Skipped set:"
++    if test "$GSTESTMODE" = "failfast"
++    then
++      RUNEXIT=1
++    fi
++  else
++    RUNEXIT=0
++  fi
++
++  if test x"$GSTESTDBG" != x
++  then
++    DEBUGGER=`gnustep-config --variable=DEBUGGER`
++    EXT=`gnustep-config --variable=EXEEXT`
++    if present "$GSTESTSUM.tmp" "^Failed test:"
++    then
++      grep -a '^Failed test:' "$GSTESTLOG.tmp" | sed -e 's/^Failed test:[^:]*:\([0-9][0-9]*\).*/break testStart if testLineNumber==\1/' > "$GSTESTDBG"
++      $DEBUGGER "./obj/$TESTNAME"$EXT -x "$GSTESTDBG"
++      rm -f "$GSTESTDBG"
++    elif present "$GSTESTSUM.tmp" "^Failed file:"
++    then
++      $DEBUGGER "./obj/$TESTNAME"$EXT
++    fi
++  fi
++
++  return 0
++}
++
++# Replace the old files.
++if test -f tests.log
++then
++  mv tests.log oldtests.log
++fi
++if test -f tests.sum
++then
++  mv tests.sum oldtests.sum
++fi
++
++SUMD=.
++foundany=no
++for TESTDIR in $TESTDIRS
++do
++  found=no
++  source=no
++  if test x"$TESTS" = x
++  then
++    # Get the names of all subdirectories containing source files.
++    if test x"$OBJCXX" = x
++    then
++      # Only Objective-C (and C)
++      SRCDIRS=`find $TESTDIR -type f \( -name "*.m" -o -name "*.c" \) | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
++    else
++      # Objective-C and Objective-C++ (implicitly C and C++ too)
++      SRCDIRS=`find $TESTDIR -type f \( -name "*.m" -o -name "*.mm" -o -name "*.c" -o -name "*.cc" \) | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
++    fi
++  else
++    SRCDIRS="$TESTDIRS"
++  fi
++  if test x"$SRCDIRS" = x
++  then
++    continue
++  fi
++
++  # found some source code
++  source=yes
++  SUMD=$TESTDIR
++  for dir in $SRCDIRS
++  do
++    if test ! -f $dir/TestInfo
++    then
++      continue
++    fi
++
++    # Step up through parents of the source directory to find the root of the
++    # test suite (the highest level directory containing a TestInfo file.
++    # Provide that in the environment for use within the makefiles/scripts.
++    GSTESTROOT=$dir
++    parentdir=`dirname $GSTESTROOT`
++    while test -f "$parentdir/TestInfo"
++    do
++      GSTESTROOT="$parentdir"
++      parentdir=`dirname $GSTESTROOT`
++      if test $parentdir = $GSTESTROOT
++      then
++	break
++      fi
++    done
++    export GSTESTROOT
++  
++    RUNEXIT=0
++    found=yes
++    foundany=yes
++
++    cd $dir
++
++    if test "$GSTESTMODE" = "clean"
++    then
++      echo "--- Cleaning tests in $dir ---"
++
++      if test -r GNUmakefile
++      then
++        $MAKE_CMD clean >/dev/null 2>&1
++      fi
++      rm -rf core core.* *.core obj GNUmakefile gdb.cmds test_*.err test_*.out tests.log tests.sum oldtests.log oldtests.sum tests.tmp tests.sum.tmp tests.log.tmp make-check.mak make-check.env
++
++    else
++      echo "--- Running tests in $dir ---"
++
++      if test -r ./Start.sh -a -x ./Start.sh
++      then
++	./Start.sh
++        STARTSCRIPTSTATUS=$?
++      else
++        STARTSCRIPTSTATUS=0
++      fi
++
++      # Get the names of all the source files in the current directory.
++      if test x"$TESTS" = x
++      then
++        if test x"$OBJCXX" = x
++        then
++          # Only Objective-C (and C)
++          TESTS=`find . \( -name . -o -prune \) -type f \( -name "*.m" -o -name "*.c" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
++        else
++          # Objective-C and Objective-C++ (implicitly C and C++ too)
++          TESTS=`find . \( -name . -o -prune \) -type f \( -name "*.m" -o -name "*.mm" -name "*.c" -o -name "*.cc" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
++        fi
++      fi
++
++      if test $STARTSCRIPTSTATUS = 0
++      then
++
++        if test -r GNUmakefile.tests 
++        then
++          # There's a custom make template present ... use it.
++          TEMPLATE=GNUmakefile.tests
++        elif test -r make-check.mak 
++        then
++          # There's an autogenerated makefile present ... use default template.
++          TEMPLATE=$GSTESTTOP/GNUmakefile.in
++        elif test -r GNUmakefile.preamble 
++        then
++          # There's a make preamble present ... use default template.
++          TEMPLATE=$GSTESTTOP/GNUmakefile.in
++        elif test -r GNUmakefile.postamble
++        then
++          # There's a make postamble present ... use default template.
++          TEMPLATE=$GSTESTTOP/GNUmakefile.in
++        elif test -r ../GNUmakefile.super
++        then
++          # There's a make superfile present ... use default template.
++          TEMPLATE=$GSTESTTOP/GNUmakefile.in
++        elif test -r "$TESTS"
++        then
++          # Single readable file ... quicker to compile directly.
++          TEMPLATE=
++        elif test x"$GSSEQUENTIAL" = xyes
++        then
++          # We don't want to build in parallel, so a makefile won't speed us up
++          TEMPLATE=
++        else
++          # There are multiple files to build ... use make for parallelisation
++          TEMPLATE=$GSTESTTOP/GNUmakefile.in
++        fi
++
++        if test x"$TEMPLATE" = x
++        then
++          rm -rf core core.* *.core obj GNUmakefile gdb.cmds
++        else
++          TESTNAMES=
++          TESTRULES=
++          for TESTFILE in $TESTS
++          do
++            tmp=`basename $TESTFILE .m`
++            if test x"$tmp" = x"$TESTFILE"
++            then
++              tmp=`basename $TESTFILE .mm`
++              if test x"$tmp" = x"$TESTFILE"
++              then
++                tmp=`basename $TESTFILE .c`
++                if test x"$tmp" = x"$TESTFILE"
++                then
++                  TESTRULES="$TESTRULES\\
++${tmp}_CC_FILES=$TESTFILE"
++                else
++                  TESTRULES="$TESTRULES\\
++${tmp}_C_FILES=$TESTFILE"
++                fi
++              else
++                TESTRULES="$TESTRULES\\
++${tmp}_OBJCC_FILES=$TESTFILE"
++              fi
++            else
++              TESTRULES="$TESTRULES\\
++${tmp}_OBJC_FILES=$TESTFILE"
++            fi
++            TESTNAMES="$TESTNAMES $tmp"
++          done
++          sed -e "s/@TESTNAMES@/$TESTNAMES/;s^@TESTOPTS@^$GSTESTOPTS^;s/@TESTRULES@/$TESTRULES/" < "$TEMPLATE" > GNUmakefile
++          $MAKE_CMD clean >/dev/null 2>&1
++
++          if test x"$GSSEQUENTIAL" = xyes
++          then
++            build_state=1
++          else
++            # Try building all the test files in the directory in parallel.
++            # If that fails, try building them individually.
++            echo "" >>$GSTESTLOG
++            echo "Building in $dir" >>$GSTESTLOG
++            if test -r ./make-check.env
++            then
++              ( . ./make-check.env; . ./TestInfo > /dev/null 2>&1; $MAKE_CMD -j 4 $GSMAKEOPTIONS) >>$GSTESTLOG 2>&1
++            else
++              ( . ./TestInfo > /dev/null 2>&1; $MAKE_CMD -j 4 $GSMAKEOPTIONS) >>$GSTESTLOG 2>&1
++            fi
++            build_state=$?
++          fi
++          if test $build_state != 0
++          then
++            for TESTFILE in $TESTS
++            do
++              build_test "$TESTFILE"
++            done
++          fi
++        fi
++
++        # Build up a list of the names of all the tests available.
++        declare -A TESTMAP
++        ALLTESTS=""
++        for TESTFILE in $TESTS
++        do
++          getname $TESTFILE
++          TESTMAP["$TESTNAME"]="$TESTFILE"
++          if test "$ALLTESTS" = ""
++          then
++            ALLTESTS="$TESTNAME"
++          else
++            ALLTESTS="$ALLTESTS $TESTNAME"
++          fi
++        done
++
++        # Get the values defined for PARALLEL and PARALLEL in TestInfo
++        # These variables should specify the names of sets of tests to
++        # be executed in parallel or sequentially respectively.
++        GSPAR=`( . ./TestInfo > /dev/null 2>&1; echo "$PARALLEL") 2>&1`
++        GSSEQ=`( . ./TestInfo > /dev/null 2>&1; echo "$SEQUENCE") 2>&1`
++
++        # When PARALLEL and SEQUENCE are both missing or empty, we treat
++        # it as if SEQUENCE had been set to contain an asterisk so that
++        # all the tests are executed in order.
++        if test "$GSPAR" = "" -a "$GSSEQ" = ""
++        then
++          GSSEQ="*"
++        fi
++
++        # Any occurrence of an asterisk in PARALLEL or SEQUENCE is replaced
++        # by the names of all the tests separated by white space.
++        GSPAR=`echo "$GSPAR" | sed -e "s/\*/ $ALLTESTS /g"`
++        GSSEQ=`echo "$GSSEQ" | sed -e "s/\*/ $ALLTESTS /g"`
++
++        # NB. we check the map to see that a file exists for each test name
++        # because the names we have been given may not exist in the set of
++        # tests being run (ie specified at the cvommand line).
++
++        # Now we process sequence test file in turn.
++        i=0
++        for TESTNAME in $GSSEQ
++        do
++          TESTFILE=${TESTMAP[$TESTNAME]}
++          if test "$TESTFILE" != ""
++          then
++            if test x"$GSVERBOSE" = xyes
++            then
++              echo "Sequence perform $TESTNAME"
++            fi
++            run_test_log $TESTFILE $TESTNAME test_$i.out test_$i.err
++            proc_test_log $TESTFILE $TESTNAME test_$i.out test_$i.err
++            if test "$RUNEXIT" != "0"
++            then
++	      break
++            fi
++            ((i+=1))
++          fi
++        done
++
++        # And process all parallel test files together
++        i=0
++        for TESTNAME in $GSPAR
++        do
++          TESTFILE=${TESTMAP[$TESTNAME]}
++          if test "$TESTFILE" != ""
++          then
++            if test x"$GSVERBOSE" = xyes
++            then
++              echo "Parallel startup $TESTNAME"
++            fi
++            run_test_log $TESTFILE $TESTNAME test_$i.out test_$i.err &
++            ((i+=1))
++          fi
++        done
++        wait
++        i=0
++        for TESTNAME in $GSPAR
++        do
++          TESTFILE=${TESTMAP[$TESTNAME]}
++          if test "$TESTFILE" != ""
++          then
++            proc_test_log $TESTFILE $TESTNAME test_$i.out test_$i.err
++            if test "$RUNEXIT" != "0"
++            then
++              break
++            fi
++            ((i+=1))
++          fi
++        done
++
++      else
++        echo "Start.sh failed in '$TESTDIR' ... tests abandoned."
++        for TESTFILE in $TESTS
++        do
++          echo "Failed file:     $TESTFILE aborted without running any tests!" | tee -a $GSTESTSUM >> $GSTESTLOG
++        done
++      fi
++      TESTS=
++
++      # And perform the directory end script.
++      if test -r ./End.sh -a -x ./End.sh
++      then
++	./End.sh
++      fi
++    fi
++
++    cd $GSTESTDIR
++    if test "$RUNEXIT" != "0"
++    then
++      break
++    fi
++  done
++
++  # Log a message if there were no tests in this directory,
++  # but only if the directory was specifically named to be tested.
++  if test $found = no
++  then
++    if test "$NONAME" = "no"
++    then
++      if test $source = no
++      then
++        echo "No tests found in '$TESTDIR'."
++      else
++        echo "No directories with 'TestInfo' marker file in '$TESTDIR'."
++      fi
++    fi
++  fi
++
++  if test "$RUNEXIT" != "0"
++  then
++    break
++  fi
++done
++
++# Log a message if there were no tests found at all and we had been
++# looking in the current directory for test subdirectories.
++if test $foundany = no
++then
++  if test "$NONAME" = "yes"
++  then
++    echo "No test subdirectories found."
++  else
++    echo "No tests found in '$TESTDIRS'."
++  fi
++fi
++
++if test "$GSTESTMODE" = "clean"
++then
++  rm -rf core core.* *.core obj GNUmakefile.tmp gdb.cmds test_*.err test_*.out tests.tmp tests.sum.tmp tests.log.tmp tests.log tests.sum oldtests.log oldtests.sum
++else
++  # Make some stats.
++  if test -r tests.sum
++  then
++    # Nasty pipeline of commands ...
++    # Look for each type of test result, sort and count the results,
++    # append 's' to each summary, then remove the trailing 's' from
++    # any summary with only a single result so the output is pretty.
++    # Sort the resulting lines by number of each status with the most
++    # common (hopefully passes) output first.
++    # NB. we omit the 'Completed file' tests as uninteresting ... users
++    # generally only want to see the total pass count and any problems.
++    extract tests.sum "^Passed test:" "^Failed test:" "^Failed build:" "^Failed file:" "^Dashed hope:" "^Failed set:" "^Skipped set:" | cut -d: -f1 | sort | uniq -c | sed -e 's/.*/&s/' | sed -e 's/^\([^0-9]*1[^0-9].*\)s$/\1/' | sort -n -b -r > tests.tmp
++  else
++    echo "No tests found." > tests.tmp
++  fi
++
++  echo >> tests.sum
++  cat tests.tmp >> tests.sum
++
++  echo
++  cat tests.tmp
++  echo
++
++fi
++
++# In the case where we ran a single testsuite, we allow the Summary.sh
++# script in that testsuite to generate our summary.
++if test x"$TESTDIRS" = x"$SUMD" -a -r $SUMD/Summary.sh -a -x $SUMD/Summary.sh
++then
++  RUNCMD=$SUMD/Summary.sh
++else
++  RUNCMD=$GSTESTTOP/Summary.sh
++fi
++$RUNCMD
++FAILS=$?
++
++# Delete the temporary file.
++rm -f test_*.err test_*.out tests.tmp tests.sum.tmp tests.log.tmp
++
++# Our exit status is 0 unless some test failed.
++if test -r "$GSTESTSUM"
++then
++  present "$GSTESTSUM" "Failed set$" "Failed sets$" "Failed test$" "Failed tests$" "Failed build$" "Failed builds$" "Failed file$" "Failed files$"
++  if [ $? = 1 ]
++  then
++    exit 0
++  else
++    exit 1
++  fi
++else
++  exit 0
++fi
+--- /dev/null
++++ theobroma-gnustep-make-2.9.3/config-install-p-test-file2
+@@ -0,0 +1,3 @@
++Some text.
++
++Thanks
+\ No newline at end of file
+--- /dev/null
++++ theobroma-gnustep-make-2.9.3/config-install-p-test.log
+@@ -0,0 +1,13 @@
++** Environment
++ INSTALL: /usr/bin/install -c
++
++ current directory: /home/chad/git/theobroma/packages/theobroma-gnustep-make-2.9.3/config-install-p-test
++ log file: /home/chad/git/theobroma/packages/theobroma-gnustep-make-2.9.3/config-install-p-test.log
++
++
++** Run /usr/bin/install -c -p
++/usr/bin/install -c -p config-install-p-test-file "/home/chad/git/theobroma/packages/theobroma-gnustep-make-2.9.3/config-install-p-test-file2"
++No error reported by /usr/bin/install -c
++
++** Checking that the installed file exists
++Success
+--- /dev/null
++++ theobroma-gnustep-make-2.9.3/gnustep-make-ld.so.conf
+@@ -0,0 +1,7 @@
++# This file was installed by gnustep-make 2.9.3
++
++/usr/lib
++/usr/System/Library/Libraries
++/usr/Local/Library/Libraries
++/usr/Local/Library/Libraries
++
+--- /dev/null
++++ theobroma-gnustep-make-2.9.3/runtime/gnu.make
+@@ -0,0 +1,232 @@
++#
++#   config.make.in
++#
++#   The settings required by the makefile package that are determined
++#   by configure and that depend on the platform.  There might be
++#   multiple of those files installed in different platform-specific
++#   directories.  Global settings that are common to all platforms
++#   should go in config-noarch.make.in instead.
++#
++#   Copyright (C) 1997-2006 Free Software Foundation, Inc.
++#
++#   Author:  Scott Christley <scottc@net-community.com>
++#   Author:  Ovidiu Predescu <ovidiu@net-community.com>
++#   Author:  Nicola Pero <n.pero@mi.flashnet.it>
++#
++#   This file is part of the GNUstep Makefile Package.
++#
++#   This library is free software; you can redistribute it and/or
++#   modify it under the terms of the GNU General Public License
++#   as published by the Free Software Foundation; either version 3
++#   of the License, or (at your option) any later version.
++#   
++#   You should have received a copy of the GNU General Public
++#   License along with this library; see the file COPYING.
++#   If not, write to the Free Software Foundation,
++#   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
++
++MAKE_WITH_INFO_FUNCTION = yes
++
++#
++# Binary and compile tools
++#
++
++# Ignore the default CC=cc used by GNU make when nothing is specified;
++# in that case, we want to use our own default CC.
++ifeq ($(origin CC), default)
++  CC       = gcc
++endif
++
++# If CC is already set but not from the GNU make default (ie, in the
++# environment), don't override it but use the provided compiler.  This
++# makes it easier to swap C/ObjC compilers on the fly.
++ifeq ($(CC),)
++  CC       = gcc
++endif
++
++# Ignore the default CXX=g++ used by GNU make when nothing is specified;
++# in that case, we want to use our own default CXX.
++ifeq ($(origin CXX), default)
++  CXX       = g++
++endif
++
++# If CXX is already set but not from the GNU make default (ie, in the
++# environment), don't override it but use the provided compiler.  This
++# makes it easier to swap C++/ObjC++ compilers on the fly.
++ifeq ($(CXX),)
++  CXX       = g++
++endif
++
++CLANG_CC = no
++
++# TODO: Because of the following, OPTFLAG usually ends up being '-g
++# -O2'.  The '-g' is fairly harmless as you can always use strip=yes
++# which will strip the object files upon installation; still, it's not
++# very elegant since -g is already added elsewhere for debug=yes, and
++# it ends up appearing twice in the gcc command-line.
++OPTFLAG  = -g -O2
++OBJCFLAGS= 
++OBJC_LIB_FLAG = 
++CPPFLAGS = 
++CPP      = gcc -E
++CCFLAGS  = -g -O2
++
++# If the 'debug' variable is not specified on the command-line or in
++# the environment, we set it to the GNUSTEP_DEFAULT_DEBUG value.  This
++# is normally 'no,', but can be changed to 'yes' when gnustep-make is
++# configured.
++GNUSTEP_DEFAULT_DEBUG = no
++
++ifeq ($(OBJC_LIB_FLAG),)
++  OBJC_LIB_FLAG = -lobjc
++endif
++
++EXEEXT = 
++OEXT   = .o
++LIBEXT = .a
++
++LN_S = ln -s
++
++# This is the best we can do given the current autoconf, which only
++# returns LN_S
++ifeq ($(LN_S), ln -s)
++  HAS_LN_S = yes
++else
++  HAS_LN_S = no
++endif
++
++# Special case - on mingw32, autoconf sets LN_S to 'ln -s', but then
++# that does a recursive copy (ie, cp -r).
++ifeq (linux-gnu,mingw32)
++  HAS_LN_S = no
++endif
++
++# This is used to remove an existing symlink before creating a new
++# one.  We don't trust 'ln -s -f' as it's unportable so we remove
++# manually the existing symlink (if any) before creating a new one.
++# If symlinks are supported on the platform, RM_LN_S is just 'rm -f';
++# if they are not, we assume they are copies (like cp -r) and we go
++# heavy-handed with 'rm -Rf'.  Note - this code might need rechecking
++# for the case where LN_S = 'ln', if that ever happens on some
++# platforms (it shouldn't cause any problems, but checking is good).
++ifeq ($(HAS_LN_S), yes)
++  RM_LN_S = rm -f
++  LN_S_RECURSIVE = $(LN_S)
++  FRAMEWORK_VERSION_SUPPORT = yes
++else
++  RM_LN_S = rm -Rf
++  # When symlinks are not available, using LN_S (which is set to 'cp -p')
++  # doesn't work on directories.  So every time you want to do the
++  # equivalent of 'ln -s' on directories, you need to use 
++  # LN_S_RECURSIVE instead of LN_S.  
++  LN_S_RECURSIVE = cp -pR
++  FRAMEWORK_VERSION_SUPPORT = no
++endif
++
++LD = $(CC)
++LDOUT =
++LDFLAGS =  -shared-libgcc 
++
++AR      = ar
++AROUT   =
++ARFLAGS = rc
++RANLIB  = ranlib
++
++DLLTOOL = 
++
++# NB: These variables are defined here only so that they can be
++# overridden on the command line (so you can type 'AWK=mawk make' to
++# use a different awk for that particular run of make).  We should
++# *NOT* set them to the full path of these tools at configure time,
++# because otherwise when you change/update the tools you would need to
++# reconfigure and reinstall gnustep-make!  We can normally assume that
++# typing 'awk' and 'sed' on the command line cause the preferred awk
++# and sed programs on the system to be used.  Hardcoding the full path
++# (or the name) of the specific awk or sed program on this sytem here
++# would make it lot more inflexible.  In other words, the following
++# definitions should remain like in 'AWK = awk' on all systems.
++AWK             = awk
++SED             = sed
++YACC            = yacc
++BISON           = bison
++FLEX            = flex
++LEX             = lex
++CHOWN           = chown
++STRIP           = strip
++
++INSTALL		= /usr/bin/install -c -p
++INSTALL_PROGRAM	= ${INSTALL}
++INSTALL_DATA	= ${INSTALL} -m 644
++TAR		= tar
++MAKE		= make
++MKDIRS		= $(GNUSTEP_MAKEFILES)/mkinstalldirs
++NM              = nm
++
++LATEX2HTML      = latex2html
++
++# Darwin specific flags
++CC_CPPPRECOMP  = no
++CC_BUNDLE      = yes
++CC_GNURUNTIME  = 
++
++# Backend bundle
++BACKEND_BUNDLE=yes
++
++#
++# Do threading stuff.
++#
++# Warning - the base library's configure.in will extract the thread
++# flags from the following line using grep/sed - so if you change the
++# following lines you *need* to update the base library configure.in
++# too.
++#
++ifndef objc_threaded
++  objc_threaded:=
++endif
++
++# Any user specified libs
++CONFIG_SYSTEM_INCL=
++CONFIG_SYSTEM_LIBS = 
++CONFIG_SYSTEM_LIB_DIR = 
++
++#
++# Whether the GCC compiler on solaris supports the -shared flag for
++# linking libraries.
++#
++SOLARIS_SHARED = yes
++
++#
++# Whether the C/ObjC/C++ compiler supports auto-dependencies
++# (generating dependencies of the object files from the include files
++# used to compile them) via -MMD -MP flags
++#
++AUTO_DEPENDENCIES = yes
++
++#
++# Whether the ObjC compiler supports native ObjC exceptions via
++# @try/@catch/@finally/@throw.
++#
++USE_OBJC_EXCEPTIONS = yes
++
++#
++# Whether the ObjC compiler supports -fobjc-arc
++#
++USE_ARC = no
++
++#
++# Whether the compiler is GCC with precompiled header support
++#
++GCC_WITH_PRECOMPILED_HEADERS = yes
++
++#
++# Whether the install_name for dynamic libraries on darwin should
++# be an absolute path.
++#
++GNUSTEP_ABSOLUTE_INSTALL_PATHS = 
++
++#
++# Whether to use -r or -Wl,-r when doing partial linking
++#
++OBJ_MERGE_CMD_FLAG = -r
++
++DEFAULT_OBJC_RUNTIME_ABI = gcc

@@ -18,7 +18,9 @@ fac0c4acd0d032857228b5c5031ef621  ./fixpath.sh.in
 e1e2c0a1aadc88a5bac7423a7906423d  ./common.make
 af99cf7802d9d4e6387960e2d375a360  ./framework.make
 c9134187c41f2e991730a1953561bb3f  ./java-tool.make
+270a079ac7319c0e377956a633460870  ./config-install-p-test-file2
 a96c240e58f2aed467aa65503b0158ac  ./service.make
+d8a039c75c4237dca7ff3f94658490bb  ./GNUstep-reset.sh
 5af2b3eccfe0f139735dc47fb2010e5b  ./rules.make
 3abac08046d8de832d576a5529caf414  ./bundle.make
 88435e1e4ecc349011491034845e93f4  ./test-application.make
@@ -70,7 +72,16 @@ ff662f3157deccfb7e195599a1b36b13  ./Instance/Shared/README
 5a2d806c5a94d8ef43a29e76427a68b0  ./Instance/tool.make
 2f29db8decacf34f93bd4720d4bac5a1  ./Instance/objc.make
 8678315f104a4cc026e9112d84717d54  ./Instance/ctool.make
-b2a1dc44af21417ef755b690624b9453  ./configure~
+e8a673d5d4d69a5fd11c880fd4c3c481  ./.pc/.quilt_series
+26ab0db90d72e28ad0ba1e22ee510510  ./.pc/.version
+dac3080c766c9c5fe78c7af1501f834d  ./.pc/applied-patches
+266f9759f56277b2751b24d1eb17c50f  ./.pc/.quilt_patches
+d41d8cd98f00b204e9800998ecf8427e  ./.pc/change-prefix/config-install-p-test-file2
+d41d8cd98f00b204e9800998ecf8427e  ./.pc/change-prefix/GNUstep-reset.sh
+d41d8cd98f00b204e9800998ecf8427e  ./.pc/change-prefix/gnustep-make-ld.so.conf
+d41d8cd98f00b204e9800998ecf8427e  ./.pc/change-prefix/runtime/gnu.make
+d41d8cd98f00b204e9800998ecf8427e  ./.pc/change-prefix/config-install-p-test.log
+d41d8cd98f00b204e9800998ecf8427e  ./.pc/change-prefix/TestFramework/gnustep-tests
 cf258f914ddb13bb4cfa8a5d60f951b5  ./config.sub
 a9cb1039042c6a3099ffcc9f39a47831  ./ChangeLog
 4f6a6d911fa03a1e30e4e33250534bc0  ./app-wrapper.template
@@ -102,6 +113,7 @@ f1a6cd800cab9fe75a15f23f31311e74  ./filesystem.sh.in
 719ed0e0040e35c480dc0e81eb1d25a9  ./cpu.sh
 b6e1264fc2915c5ac803b6addd872ab4  ./names.make
 ca094052ccea5156003a063f014e0ab2  ./java.make
+daf4d0ebf947593b7c7411d029132da5  ./gnustep-make-ld.so.conf
 b171478489b8266e93268c9172cdc7d0  ./GNUstep-strict-v2.conf.in
 9eab1d66cd3ff92272e784f078b1e368  ./Documentation/news.texi
 8075a6e016abfb21bf6ad271ef13b059  ./Documentation/announce.texi
@@ -138,10 +150,12 @@ d8cc4c0542fed7acfe427a81bee90d78  ./GNUstep.csh.in
 8006d9c814277c1bfc4ca22af94b59ee  ./COPYING
 11714d3cd0a013dc3a7fd350d3a67066  ./config.guess
 264d97b68f8ac36a0e7defcdebfbde64  ./GNUmakefile.postamble
+07ca1cfbb536489e8e2a09b457ae9043  ./runtime/gnu.make
 4fffec2d47dcfad783a6c1ffea96c1e4  ./GNUstep.sh.in
 8915be3a13163bfe841a6d02a2ed674d  ./NEWS
 9e8e970c882b56f399561b45f5bd5423  ./configure.ac
 773caafa5c720c7844dfd128e5923c50  ./tar-exclude-list
+dab05ba463b5fee23c9528a3e7ebd482  ./config-install-p-test.log
 51685eec0bd5b8e2420e0e9ed6a73298  ./empty.make
 5449c3dbd966e9ab6d05252c92cf01d2  ./GNUstep.conf.in
 c9f268c8e58530e3bfe91bdabf06b7ac  ./FilesystemLayouts/gnustep
@@ -171,6 +185,7 @@ cd21f1bab794938448710265baf33cdf  ./strip_makefiles.sh
 a586dee70f21824c95ebb77e82e16980  ./TestFramework/Start.sh
 f63d75baf0093e18f97172d93e958da6  ./TestFramework/example9.m
 3710c22fafadce1a48c470fb6a8ebd46  ./TestFramework/example5.m
+60a50bab6658507077341c73d087aeed  ./TestFramework/gnustep-tests
 688576a4f96efbce441feca258c7744d  ./TestFramework/ObjectTesting.h
 98554da124f70e015dc622d76744a7e7  ./TestFramework/Testing.h
 ac5935883da7c9abea56fadbe93d5309  ./TestFramework/GNUmakefile.in
@@ -224,7 +239,6 @@ f555cd214d3d959a6dc52c2e7181cacb  ./aggregate.make
 db3aeabe7d1fc748b9d55d5146063e59  ./print_unique_pathlist.sh
 dd8d16de72d9519e35e13d401393a04b  ./parallel-subdirectories.make
 79cdd5c0175b84026ba165ddcf63a3cb  ./jni.make
-59798e3da956b6dff779b08cca45d2c6  ./install-sh~
 8a97b2332f95acbfe281dc425b46e193  ./objc.make
 900a079536e77c7865652ff1a223552b  ./ChangeLog.1
 3c672a2b9b97a43324153dae285a1176  ./ANNOUNCE

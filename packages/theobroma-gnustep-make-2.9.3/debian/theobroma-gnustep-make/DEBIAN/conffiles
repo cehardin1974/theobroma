@@ -1,1 +1,1 @@
-/etc/GNUstep/GNUstep.conf
+/etc/ld.so.conf.d/gnustep-make.conf

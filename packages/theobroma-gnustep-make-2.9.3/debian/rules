@@ -17,5 +17,7 @@ LDFLAGS :=
 # This is an example for Cmake (see <https://bugs.debian.org/641051>).
 override_dh_auto_configure:
 	dh_auto_configure -- \
+	  --prefix=/opt/GNUstep \
       --with-layout=gnustep \
+	  --enable-install-ld-so-conf \
 	  SHELLPROG=/bin/bash GNUMAKE=make LATEX2HTML=latex2html
