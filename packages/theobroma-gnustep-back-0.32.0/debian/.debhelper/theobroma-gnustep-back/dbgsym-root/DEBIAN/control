@@ -1,0 +1,12 @@
+Package: theobroma-gnustep-back-dbgsym
+Source: theobroma-gnustep-back
+Version: 0.32.0-1
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: Chad Hardin <chad@unknown>
+Installed-Size: 723
+Depends: theobroma-gnustep-back (= 0.32.0-1)
+Section: debug
+Priority: optional
+Description: debug symbols for theobroma-gnustep-back
+Build-Ids: 20796f8f311998fce7d5efcd7f71cec7c824b566 d4021fc59435d192cf39390ade2ae37cd59e9623

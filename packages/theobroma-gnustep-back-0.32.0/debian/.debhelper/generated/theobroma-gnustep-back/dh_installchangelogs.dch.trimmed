@@ -1,0 +1,5 @@
+theobroma-gnustep-back (0.32.0-1) UNRELEASED; urgency=medium
+
+  * Initial release. (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Chad Hardin <chad@unknown>  Sun, 28 Sep 2025 06:44:15 -0700
