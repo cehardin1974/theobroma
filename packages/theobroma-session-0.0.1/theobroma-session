@@ -1,0 +1,5 @@
+#!/bin/sh
+
+source /opt/GNUstep/System/Library/Makefiles/GNUstep.sh
+
+exec /opt/GNUstep/System/Applications/GWorkspace.app/GWorkspace "$@"

@@ -1,0 +1,11 @@
+Package: theobroma-session
+Version: 0.0.1-1
+Architecture: amd64
+Maintainer: Chad Hardin <chad@unknown>
+Installed-Size: 13
+Depends: xorg, xinit, theobroma-gworkspace
+Section: unknown
+Priority: optional
+Homepage: <insert the upstream URL, if relevant>
+Description: <insert up to 60 chars description>
+ <Insert long description, indented with spaces.>

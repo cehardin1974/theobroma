@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Theobroma Session
+Comment=Runs GNUstep Desktop
+Exec=/usr/bin/theobroma-session
+Type=Application
