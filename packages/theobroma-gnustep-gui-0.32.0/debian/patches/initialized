@@ -1,0 +1,75 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ theobroma-gnustep-gui (0.32.0-1) UNRELEASED; urgency=medium
+ .
+   * Initial release. (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+Author: Chad Hardin <chad@unknown>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout https://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: (upstream|backport|vendor|other), (<patch-url>|commit:<commit-id>)
+Bug: <upstream-bugtracker-url>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: (no|not-needed|<patch-forwarded-url>)
+Applied-Upstream: <version>, (<commit-url>|commit:<commid-id>)
+Reviewed-By: <name and email of someone who approved/reviewed the patch>
+Last-Update: 2025-09-28
+
+--- /dev/null
++++ theobroma-gnustep-gui-0.32.0/Headers/Additions/GNUstepGUI/GSVersion.h
+@@ -0,0 +1,37 @@
++/* 
++   GSVersion.h
++
++   Define version of GNUstep GUI Library
++
++   Copyright (C) 2001 Free Software Foundation, Inc.
++
++   Author:  Nicola Pero <nicola@brainstorm.co.uk>
++   Date: 2001
++   
++   This file is part of the GNUstep GUI Library.
++
++   This library is free software; you can redistribute it and/or
++   modify it under the terms of the GNU Lesser General Public
++   License as published by the Free Software Foundation; either
++   version 3 of the License, or (at your option) any later version.
++
++   This library is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
++   Lesser General Public License for more details.
++
++   You should have received a copy of the GNU Lesser General Public
++   License along with this library; see the file COPYING.LIB.
++   If not, see <http://www.gnu.org/licenses/> or write to the 
++   Free Software Foundation, 51 Franklin Street, Fifth Floor, 
++   Boston, MA 02110-1301, USA.
++*/ 
++
++#ifndef GNUSTEP_GUI_VERSION
++
++#define GNUSTEP_GUI_VERSION          0.32.0
++#define GNUSTEP_GUI_MAJOR_VERSION    0
++#define GNUSTEP_GUI_MINOR_VERSION    32
++#define GNUSTEP_GUI_SUBMINOR_VERSION 0
++
++#endif /* GNUSTEP_GUI_VERSION */
+--- /dev/null
++++ theobroma-gnustep-gui-0.32.0/Source/gnustep-gui.pc
+@@ -0,0 +1,6 @@
++Name: gnustep-gui
++Description: The GNUstep gui library is a library of graphical user interface classes written completely in the Objective-C language; the classes are based upon Apple's Cocoa framework (which came from the OpenStep specification).
++Version: 0.32.0
++URL: https://github.com/gnustep/libs-gui/
++Libs: -shared-libgcc -pthread -fexceptions -rdynamic -L/opt/GNUstep/Local/Library/Libraries -L/opt/GNUstep/System/Library/Libraries -lgnustep-base -lobjc -lm
++Cflags:  -MMD -MP -DGNUSTEP -DGNUSTEP_BASE_LIBRARY=1 -DGNU_RUNTIME=1 -DGNUSTEP_BASE_LIBRARY=1 -fno-strict-aliasing -fexceptions -fobjc-exceptions -D_NATIVE_OBJC_EXCEPTIONS -pthread -fPIC -Wall -DGSWARN -DGSDIAGNOSE -Wno-import -g -O2 -fconstant-string-class=NSConstantString -I. -I/opt/GNUstep/Local/Library/Headers -I/opt/GNUstep/System/Library/Headers

@@ -5,6 +5,7 @@
 #export DH_VERBOSE = 1
 
 export GNUSTEP_INSTALLATION_DOMAIN=SYSTEM
+
 %:
 	. /opt/GNUstep/System/Library/Makefiles/GNUstep.sh && dh $@
 

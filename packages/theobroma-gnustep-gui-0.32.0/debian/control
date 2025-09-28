@@ -1,0 +1,41 @@
+Source: theobroma-gnustep-gui
+Section: theobroma
+Priority: optional
+Maintainer: Chad Hardin <cehardin@gmail.com>
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+ flite1-dev,
+ libao-dev,
+ libaspell-dev,
+ libcups2-dev,
+ libgif-dev,
+ theobroma-gnustep-base (>= 1.31),
+ libicns-dev,
+ libicu-dev,
+ libjpeg-dev,
+ libmagickcore-7.q16-dev,
+ libpng-dev,
+ libpocketsphinx-dev [!s390x !hppa !m68k !powerpc !ppc64 !sparc64],
+ libsndfile1-dev,
+ libtiff-dev,
+ m4,
+ zlib1g-dev,
+Build-Depends-Indep:
+ theobroma-gnustep-base <!nodoc>,
+ texinfo <!nodoc>,
+ texlive-base <!nodoc>,
+ texlive-latex-base <!nodoc>,
+Standards-Version: 4.7.2
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Browser: https://salsa.debian.org/debian/theobroma-gnustep-gui
+#Vcs-Git: https://salsa.debian.org/debian/theobroma-gnustep-gui.git
+
+Package: theobroma-gnustep-gui
+Architecture: any
+Depends:
+ theobroma-gnustep-base (>= 1.31),
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: <insert up to 60 chars description>
+ <Insert long description, indented with spaces.>
