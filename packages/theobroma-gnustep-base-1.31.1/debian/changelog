@@ -1,0 +1,5 @@
+theobroma-gnustep-base (1.31.1-1) UNRELEASED; urgency=medium
+
+  * Initial release. (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Chad Hardin <chad@unknown>  Sun, 28 Sep 2025 02:51:52 -0700

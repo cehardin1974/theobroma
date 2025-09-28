@@ -22,5 +22,5 @@
 # dh_make generated override targets.
 # This is an example for Cmake (see <https://bugs.debian.org/641051>).
 override_dh_auto_configure:
-	dh_auto_configure -- \
-    --with-layout=gnustep
+	source /usr/share/GNUstep/Makefiles/GNUstep.sh && \
+	dh_auto_configure --
