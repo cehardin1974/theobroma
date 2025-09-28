@@ -1,0 +1,21 @@
+Source: theobroma-terminal
+Section: unknown
+Priority: optional
+Maintainer: Chad Hardin <chad@unknown>
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+ theobroma-gnustep-gui (>= 0.32.0),
+Standards-Version: 4.7.2
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Browser: https://salsa.debian.org/debian/theobroma-terminal
+#Vcs-Git: https://salsa.debian.org/debian/theobroma-terminal.git
+
+Package: theobroma-terminal
+Architecture: any
+Depends:
+ theobroma-gnustep-gui (>= 0.32.0),
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: <insert up to 60 chars description>
+ <Insert long description, indented with spaces.>

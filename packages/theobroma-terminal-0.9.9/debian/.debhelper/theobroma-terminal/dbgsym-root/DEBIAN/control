@@ -1,0 +1,12 @@
+Package: theobroma-terminal-dbgsym
+Source: theobroma-terminal
+Version: 0.9.9-1
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: Chad Hardin <chad@unknown>
+Installed-Size: 325
+Depends: theobroma-terminal (= 0.9.9-1)
+Section: debug
+Priority: optional
+Description: debug symbols for theobroma-terminal
+Build-Ids: de71bb03c02f62b1606bea4564616368f89a220f

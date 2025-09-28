@@ -1,0 +1,10 @@
+obj/Terminal.obj/Label.m.o
+obj/Terminal.obj/PreferencesWindowController.m.o
+obj/Terminal.obj/ServicesParameterWindowController.m.o
+obj/Terminal.obj/ServicesPrefs.m.o
+obj/Terminal.obj/TerminalParser_Linux.m.o
+obj/Terminal.obj/TerminalParser_LinuxPrefs.m.o
+obj/Terminal.obj/TerminalView.m.o
+obj/Terminal.obj/TerminalViewPrefs.m.o
+obj/Terminal.obj/TerminalWindowPrefs.m.o
+obj/Terminal.obj/autokeyviewchain.m.o
